@@ -16,7 +16,7 @@ categories: 编程
 
 先看效果：
 
-![](./0.gif)
+{% asset_img 0.gif %}
 
 或点击查看[网页示例](https://works-wings.oss-cn-hangzhou.aliyuncs.com/WebAnimationTricks/data/InfiniteSlideText/page/Index.html)
 
@@ -77,7 +77,7 @@ categories: 编程
 
 效果如下：
 
-![](1.gif)
+{% asset_img 1.gif %}
 
 这里有两个问题：
 
@@ -108,7 +108,7 @@ categories: 编程
 
 效果如下：
 
-![](2.gif)
+{% asset_img 2.gif %}
 
 ### 首尾相连
 
