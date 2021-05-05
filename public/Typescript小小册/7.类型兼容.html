@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/public/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/public/css/main.css">
+
+
+<link rel="stylesheet" href="/public/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wingsj0.github.io","root":"/public/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述Typescript 的类型兼容指不同的类型的变量可以相互替换和给编译器额外信息来识别具体类型，主要包括：  变量类型兼容 函数类型兼容 类型守卫   兼容变量类型兼容Typescript 的类型兼容不是依据类型名称，而是类型的成员。也就是说，两个类型如果成员相同或是其中一个类型只缺少可选类型，那么这两个类型就是兼容的。比如： 12345678910interface A &amp;#123;  na">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wigns-J Young-Soul">
+<meta property="og:url" content="https://wingsj0.github.io/Typescript%E5%B0%8F%E5%B0%8F%E5%86%8C/7.%E7%B1%BB%E5%9E%8B%E5%85%BC%E5%AE%B9.html">
+<meta property="og:site_name" content="Wigns-J Young-Soul">
+<meta property="og:description" content="概述Typescript 的类型兼容指不同的类型的变量可以相互替换和给编译器额外信息来识别具体类型，主要包括：  变量类型兼容 函数类型兼容 类型守卫   兼容变量类型兼容Typescript 的类型兼容不是依据类型名称，而是类型的成员。也就是说，两个类型如果成员相同或是其中一个类型只缺少可选类型，那么这两个类型就是兼容的。比如： 12345678910interface A &amp;#123;  na">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-05T03:08:11.812Z">
+<meta property="article:modified_time" content="2021-04-09T13:39:57.393Z">
+<meta property="article:author" content="Wings-J">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wingsj0.github.io/Typescript%E5%B0%8F%E5%B0%8F%E5%86%8C/7.%E7%B1%BB%E5%9E%8B%E5%85%BC%E5%AE%B9">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | Wigns-J Young-Soul
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/public/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wigns-J Young-Soul</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/public/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/public/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-code">
+
+    <a href="/public/categories/%E7%BC%96%E7%A8%8B/" rel="section"><i class="fa fa-cube fa-fw"></i>编程</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Typescript 的类型兼容指不同的类型的变量可以相互替换和给编译器额外信息来识别具体类型，主要包括：</p>
+<ul>
+<li>变量类型兼容</li>
+<li>函数类型兼容</li>
+<li>类型守卫</li>
+</ul>
+<hr>
+<h2 id="兼容"><a href="#兼容" class="headerlink" title="兼容"></a>兼容</h2><h3 id="变量类型兼容"><a href="#变量类型兼容" class="headerlink" title="变量类型兼容"></a>变量类型兼容</h3><p>Typescript 的类型兼容不是依据类型名称，而是类型的成员。也就是说，两个类型如果成员相同或是其中一个类型只缺少可选类型，那么这两个类型就是兼容的。比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  name: <span class="built_in">string</span></span><br><span class="line">  value?: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">  name: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a: A = &#123; <span class="attr">name</span>: <span class="string">&#x27;b&#x27;</span> &#125; <span class="keyword">as</span> B</span><br><span class="line"><span class="keyword">let</span> c: stirng = <span class="number">0</span> <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+
+<p>因为类型<code>A</code>和<code>B</code>的必需属性都是<code>name</code>，所以<code>B</code>类型变量可以赋值给<code>A</code>类型变量。但是<code>string</code>和<code>number</code>不兼容，无法互相赋值。</p>
+<p>在看一个例子：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">x: &#123; name: <span class="built_in">string</span> &#125;</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = &#123;</span><br><span class="line">  name: <span class="string">&#x27;a&#x27;</span>,</span><br><span class="line">  value: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">log(a)</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>x</code>要求对象有一个<code>string</code>类型的<code>name</code>成员，虽然对象<code>a</code>多了一个<code>value</code>成员，但是只要它有<code>string</code>类型的<code>name</code>成员，就满足兼容条件。</p>
+<p>但有一个例外情况，<strong>如果给函数传入一个直接量，那么必须与参数的对象成员一致，不能有多余的成员，返回值同样如此</strong>。比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">log(&#123; <span class="attr">name</span>: <span class="string">&#x27;a&#x27;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;) <span class="comment">// 错误。value多余</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="类实例"><a href="#类实例" class="headerlink" title="类实例"></a>类实例</h4><p>不同类实例之间，只要实例成员兼容则类型兼容，不要求静态成员兼容。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> value: <span class="built_in">string</span> = <span class="string">&#x27;a&#x27;</span></span><br><span class="line"></span><br><span class="line">  log(x: <span class="built_in">string</span>): <span class="built_in">void</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> value: <span class="built_in">number</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  log(x: <span class="built_in">string</span>): <span class="built_in">void</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a: A = <span class="keyword">new</span> B()</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数类型兼容"><a href="#函数类型兼容" class="headerlink" title="函数类型兼容"></a>函数类型兼容</h3><p>函数类型兼容主要是指函数的参数数量类型和返回值类型的兼容。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Scale = <span class="function">(<span class="params">x: <span class="built_in">string</span>, y: <span class="built_in">string</span></span>) =&gt;</span> &#123; <span class="attr">length</span>: <span class="built_in">number</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> scale: Scale = <span class="function"><span class="keyword">function</span> (<span class="params">x: <span class="built_in">string</span></span>): </span>&#123; length: <span class="built_in">number</span> &#125; &#123;</span><br><span class="line">  <span class="keyword">let</span> result = &#123; <span class="attr">length</span>: x.length &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> v = scale(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>函数参数和返回值也遵循之前的变量类型的兼容，除此外它还有更宽泛的兼容性，且参数和返回值的兼容方向不同。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Scale = <span class="function">(<span class="params">x: <span class="built_in">string</span>, y: <span class="built_in">string</span></span>) =&gt;</span> &#123; <span class="attr">length</span>: <span class="built_in">number</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> scale: Scale = <span class="function"><span class="keyword">function</span> (<span class="params">x: <span class="built_in">string</span></span>): </span>&#123; length: <span class="built_in">number</span> &#125; &#123;</span><br><span class="line">  <span class="keyword">let</span> result = &#123; <span class="attr">length</span>: x.length &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> v = scale(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>Scale</code>类型函数的参数有两个，但是变量<code>scale</code>被赋予只有一个参数的函数值，但这是合法的。参数是从函数外流向函数内，<code>Scale</code>类型对外要求两个参数，但是这两个参数在函数体内并不一定需要全部被用到。因为函数体即使只使用了一个参数，另一个参数没有使用，也不会发生运行时错误，所以这样的类型是兼容的。也就是说，函数变量的参数只要类型兼容且数量小于等于类型声明的参数数量，两者就是兼容的。</p>
+<p>再来看返回值类型不同的情况：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Scale = <span class="function">(<span class="params">x: <span class="built_in">string</span></span>) =&gt;</span> &#123; <span class="attr">length</span>: <span class="built_in">number</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> scale: Scale = <span class="function"><span class="keyword">function</span> (<span class="params">x: <span class="built_in">string</span></span>): </span>&#123; length: <span class="built_in">number</span> &#125; &#123;</span><br><span class="line">  <span class="keyword">let</span> result = &#123; <span class="attr">length</span>: x.length, <span class="attr">value</span>: x &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> v = scale(<span class="string">&#x27;x&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>Scale</code>类型函数的返回值只有一个<code>length</code>成员，但是变量<code>scale</code>的返回值有<code>length</code>和<code>value</code>两个成员，这也是合法的。返回值从函数内流向函数外，<code>Scale</code>类型对外宣称返回的对象有一个成员，那么只要在满足外部期望，即返回了<code>length</code>成员的情况下，就是合法的。置于额外的成员是否被用到，是编译器无法推断的。</p>
+<p><strong>总结来说，就是数据流出方满足数据流入方的期望，不会造成出现<code>undefined</code>的运行时错误，类型就是兼容的。</strong></p>
+<h3 id="类型守卫"><a href="#类型守卫" class="headerlink" title="类型守卫"></a>类型守卫</h3><h4 id="null-和-undefined"><a href="#null-和-undefined" class="headerlink" title="null 和 undefined"></a>null 和 undefined</h4><p>有些变量用联合类型使得它们可以为空（<code>null</code>或<code>undefined</code>），比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: <span class="built_in">string</span> | <span class="literal">null</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x.length <span class="comment">// 错误</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为<code>x</code>可能为<code>null</code>，但是<code>null</code>没有<code>length</code>成员，所以编译器报错。可以通过判断<code>x</code>是否存在来兼容：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: <span class="built_in">string</span> | <span class="literal">null</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (x) &#123;</span><br><span class="line">    <span class="comment">// 或 x !== null</span></span><br><span class="line">    <span class="keyword">return</span> x.length</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有时我们可以确认一些可控类型的变量一定有值，那么我们可以使用操作符<code>!</code>来告诉编译器这个变量不可能为<code>null</code>或<code>undefined</code>。比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = a.tagName <span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">let</span> c = a!.tagName</span><br></pre></td></tr></table></figure>
+
+<p>因为变量<code>a</code>可能为<code>null</code>所以不能直接读取<code>tagName</code>属性，如果我们能确定这个元素存在，我们可以在变量<code>a</code>后加上<code>!</code>，编译器就认为<code>a</code>一定有值，不再报错。</p>
+<h4 id="多类型函数参数"><a href="#多类型函数参数" class="headerlink" title="多类型函数参数"></a>多类型函数参数</h4><p>有些函数的参数类型是一个联合类型，可以传入多种类型的参数，但在使用参数时不一定兼容。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: <span class="built_in">string</span> | <span class="built_in">number</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x.length <span class="comment">// 错误</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为<code>number</code>类型没有<code>length</code>成员，所以 Typescript 会报告这里可能会有错误。我们可以使用<code>typeof</code>来判断这里的类型，比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: <span class="built_in">string</span> | <span class="built_in">number</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x.length</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x.toString().length</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Typescript 编译器会检测到代码判断了类型，所以这里读取<code>length</code>属性是安全的。</p>
+<p>也可以使用<code>instanceof</code>判断原型。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">value</span>(<span class="params">x: <span class="built_in">Date</span> | <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (x <span class="keyword">instanceof</span> <span class="built_in">Date</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x.toUTCString()</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x.toUpperCase()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="成员名"><a href="#成员名" class="headerlink" title="成员名"></a>成员名</h4><p>通过操作符<code>in</code>判断成员是否存在，进而判断类型。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  name: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">  value: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: A | B</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;name&#x27;</span> <span class="keyword">in</span> x) &#123;</span><br><span class="line">    <span class="keyword">return</span> x.name.length</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="接口字面量成员"><a href="#接口字面量成员" class="headerlink" title="接口字面量成员"></a>接口字面量成员</h4><p>对于有字面量类型成员的类型，可以通过判断字面量成员来确定类型。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  name: <span class="string">&#x27;a&#x27;</span></span><br><span class="line">  value: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">  name: <span class="string">&#x27;b&#x27;</span></span><br><span class="line">  value: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: A | B</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (x.name === <span class="string">&#x27;a&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x.value.length</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为接口<code>A</code>的成员<code>name</code>只能被赋值为<code>a</code>，所以在函数中如果判断参数<code>x</code>的成员<code>name === &#39;a&#39;</code>，就能推断<code>x</code>是<code>A</code>类型，那么其<code>value</code>属性是字符串，可以读取<code>length</code>成员。</p>
+<h4 id="自定义类型守卫"><a href="#自定义类型守卫" class="headerlink" title="自定义类型守卫"></a>自定义类型守卫</h4><p>如果上述的方法不够用，我们可以自定义类型守卫，就是编写一个判断函数。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  name: <span class="string">&#x27;a&#x27;</span></span><br><span class="line">  value: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">  name: <span class="string">&#x27;b&#x27;</span></span><br><span class="line">  value: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isA</span>(<span class="params">x: <span class="built_in">any</span></span>): <span class="title">x</span> <span class="title">is</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x.name === <span class="string">&#x27;a&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: A | B</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (isA(x)) &#123;</span><br><span class="line">    <span class="keyword">return</span> x.value.length</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们通过在函数<code>isA</code>的返回值处用操作符<code>is</code>来声明这是一个自定义的类型守卫，且这个守卫的用处就是用来判断参数<code>x</code>是否是<code>A</code>类型。函数体内是进行判断的具体逻辑，函数的返回值必须是<code>boolean</code>。这个函数的意义就是由我们来告诉编译器怎么判断一个参数是否是<code>A</code>类型，可以用在判断语句（比如<code>if</code>）中，这样编译器对相应的变量可以进行类型推断。</p>
+<p>在类中可以使用<code>this</code>作为<code>is</code>的操作数。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="title">implements</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  name: <span class="string">&#x27;a&#x27;</span> = <span class="string">&#x27;a&#x27;</span></span><br><span class="line">  value: <span class="built_in">string</span> = <span class="string">&#x27;0&#x27;</span></span><br><span class="line"></span><br><span class="line">  isA(): <span class="built_in">this</span> is A &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.name === <span class="string">&#x27;a&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%BC%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">兼容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%E5%85%BC%E5%AE%B9"><span class="nav-number">2.1.</span> <span class="nav-text">变量类型兼容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.1.1.</span> <span class="nav-text">类实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B%E5%85%BC%E5%AE%B9"><span class="nav-number">2.2.</span> <span class="nav-text">函数类型兼容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%AE%88%E5%8D%AB"><span class="nav-number">2.3.</span> <span class="nav-text">类型守卫</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null-%E5%92%8C-undefined"><span class="nav-number">2.3.1.</span> <span class="nav-text">null 和 undefined</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.2.</span> <span class="nav-text">多类型函数参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%90%8D"><span class="nav-number">2.3.3.</span> <span class="nav-text">成员名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%AD%97%E9%9D%A2%E9%87%8F%E6%88%90%E5%91%98"><span class="nav-number">2.3.4.</span> <span class="nav-text">接口字面量成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E5%AE%88%E5%8D%AB"><span class="nav-number">2.3.5.</span> <span class="nav-text">自定义类型守卫</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wings-J</p>
+  <div class="site-description" itemprop="description">Wings-J 技术博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/public/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wings-J</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/public/lib/anime.min.js"></script>
+  <script src="/public/lib/velocity/velocity.min.js"></script>
+  <script src="/public/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/public/js/utils.js"></script>
+
+<script src="/public/js/motion.js"></script>
+
+
+<script src="/public/js/schemes/muse.js"></script>
+
+
+<script src="/public/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/public/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/public/css/main.css">
+
+
+<link rel="stylesheet" href="/public/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wingsj0.github.io","root":"/public/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述Typescript 的高级类型指操作基本类型和复合类型而得的类型，包括：  联合 交叉 泛型 字面量类型   类型别名在讲具体的高级类型之前，我们先了解一下 Typescript 的类型别名。类型别名也是一种类型，用一个单词代表可能比较复杂的类型声明，用关键字type表示。 示例： 123type S &#x3D; stringlet a: S &#x3D; &amp;#x27;a&amp;#x27;  这里用S作为strin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wigns-J Young-Soul">
+<meta property="og:url" content="https://wingsj0.github.io/Typescript%E5%B0%8F%E5%B0%8F%E5%86%8C/5.%E9%AB%98%E7%BA%A7%E7%B1%BB%E5%9E%8B.html">
+<meta property="og:site_name" content="Wigns-J Young-Soul">
+<meta property="og:description" content="概述Typescript 的高级类型指操作基本类型和复合类型而得的类型，包括：  联合 交叉 泛型 字面量类型   类型别名在讲具体的高级类型之前，我们先了解一下 Typescript 的类型别名。类型别名也是一种类型，用一个单词代表可能比较复杂的类型声明，用关键字type表示。 示例： 123type S &#x3D; stringlet a: S &#x3D; &amp;#x27;a&amp;#x27;  这里用S作为strin">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-05T03:08:11.809Z">
+<meta property="article:modified_time" content="2021-04-09T12:44:19.965Z">
+<meta property="article:author" content="Wings-J">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wingsj0.github.io/Typescript%E5%B0%8F%E5%B0%8F%E5%86%8C/5.%E9%AB%98%E7%BA%A7%E7%B1%BB%E5%9E%8B">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | Wigns-J Young-Soul
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/public/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wigns-J Young-Soul</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/public/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/public/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-code">
+
+    <a href="/public/categories/%E7%BC%96%E7%A8%8B/" rel="section"><i class="fa fa-cube fa-fw"></i>编程</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Typescript 的高级类型指操作基本类型和复合类型而得的类型，包括：</p>
+<ul>
+<li>联合</li>
+<li>交叉</li>
+<li>泛型</li>
+<li>字面量类型</li>
+</ul>
+<hr>
+<h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p>在讲具体的高级类型之前，我们先了解一下 Typescript 的类型别名。类型别名也是一种类型，用一个单词代表可能比较复杂的类型声明，用关键字<code>type</code>表示。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> S = <span class="built_in">string</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a: S = <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里用<code>S</code>作为<code>string</code>的别名，使用方法和<code>string</code>一模一样。</p>
+<p>别名不仅可以代表基本类型，它可以代表任意类型。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> SA = <span class="built_in">string</span>[] <span class="comment">// 代表字符串数组</span></span><br><span class="line"><span class="keyword">type</span> Handler = <span class="function">(<span class="params">x: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span> <span class="comment">// 代表函数</span></span><br><span class="line"><span class="keyword">type</span> I = &#123;</span><br><span class="line">  <span class="comment">// 代表接口</span></span><br><span class="line">  name: <span class="built_in">string</span></span><br><span class="line">  value: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;</span><br><span class="line">  name: <span class="built_in">string</span> = <span class="string">&#x27;a&#x27;</span></span><br><span class="line">  value: <span class="built_in">number</span> = <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> D = C <span class="comment">// 代表类</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><h3 id="联合"><a href="#联合" class="headerlink" title="联合"></a>联合</h3><p>联合类型是指变量为多个类型中的一种，是“或”的关系，用操作符<code>|</code>表示。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> StringOrNumber = <span class="built_in">string</span> | <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a: StringOrNumber = <span class="string">&#x27;a&#x27;</span></span><br><span class="line"><span class="keyword">let</span> b: StringOrNumber = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">x: <span class="built_in">string</span> | <span class="built_in">number</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>StringOrNumber</code>表示一种可以是字符串或者也可以是数字的类型，所以对于<code>StringOrNumber</code>类型的变量，既可以赋值为字符串，也可以赋值为数字。</p>
+<p>在 Typescript 中，<code>null</code>和<code>undefined</code>与其它类型是同层级的，它们不是任何类型的子类型，也就是说我们不能用它们来表示一个特定类型的空指针。但是我们确实需要在一个变量未确定时保持为空状态，这时可以用联合类型来表示一个变量可为<code>null</code>或<code>undefined</code>。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  name: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a: A | <span class="literal">null</span> = <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="三目条件运算符"><a href="#三目条件运算符" class="headerlink" title="三目条件运算符"></a>三目条件运算符</h4><p>三目条件运算符表达式的返回值类型可能是一个联合类型。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="built_in">Math</span>.random() &lt; <span class="number">0.5</span> ? <span class="string">&#x27;a&#x27;</span> : <span class="number">0</span> <span class="comment">// string | number</span></span><br></pre></td></tr></table></figure>
+
+<p>因为三目条件运算符表达式可能返回字符串或数字，所以其返回值的类型是<code>string | number</code></p>
+<h3 id="交叉"><a href="#交叉" class="headerlink" title="交叉"></a>交叉</h3><p>交叉类型是指多个类型合并成一个类型，是“且”的关系，用操作符<code>&amp;</code>表示。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  x: <span class="built_in">string</span></span><br><span class="line">  y: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">  x: <span class="built_in">string</span></span><br><span class="line">  z: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> C = A &amp; B</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c: C = &#123; <span class="attr">x</span>: <span class="string">&#x27;x&#x27;</span>, <span class="attr">y</span>: <span class="number">0</span>, <span class="attr">z</span>: <span class="number">1</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>交叉类型的成员包含了所有原类型的的所有成员，比如上述代码中，<code>c</code>变量必须既是<code>A</code>类型也是<code>B</code>类型，也就是说它必须同时拥有两个类型要求的属性。</p>
+<p>有一些类型是无法交叉的，比如基本类型。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = <span class="built_in">string</span> &amp; <span class="built_in">number</span></span><br></pre></td></tr></table></figure>
+
+<p>因为一个变量不可能既是字符串又是数字，所以最终<code>A</code>类型是<code>never</code>类型。</p>
+<p>如果被交叉的两个类型有同名但类型不同的成员，那么这两个同名成员也会被交叉。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  x: &#123; <span class="attr">a</span>: <span class="built_in">string</span>; b: <span class="built_in">number</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">  x: &#123; <span class="attr">a</span>: <span class="built_in">string</span>; c: <span class="built_in">number</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> C = A &amp; B</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c: C = &#123; <span class="attr">x</span>: &#123; <span class="attr">a</span>: <span class="string">&#x27;a&#x27;</span>, <span class="attr">b</span>: <span class="number">0</span>, <span class="attr">c</span>: <span class="number">1</span> &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>类型<code>A</code>和<code>B</code>有同名但类型不同的成员<code>x</code>，交叉时两个<code>x</code>成员也可以交叉，因此最终<code>x</code>的类型为：<code>&#123;a: string, b: number, c: number&#125;</code>。</p>
+<h3 id="字面量类型"><a href="#字面量类型" class="headerlink" title="字面量类型"></a>字面量类型</h3><p>Typescript 中字面量也可以作为一个类型。比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a: <span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上述声明表示变量<code>a</code>的值只能是<code>&#39;A&#39;</code>，赋值为其它值时会报错。</p>
+<p>此处要注意与变量<code>A</code>的区别，即：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> A = <span class="string">&#x27;A&#x27;</span></span><br><span class="line"><span class="keyword">type</span> A = <span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>const A = &#39;A&#39;</code>表示变量 A 的值是<code>&#39;A&#39;</code>，而<code>type A = &#39;A&#39;</code>表示一种类型，这个类型的变量只能被赋值为<code>A</code>。<strong>两者的使用场景不同</strong>。</p>
+<p>数字和布尔也可以作为字面量类型。这看起来没什么用，但是这种特性一般会与联合结合起来使用。比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Option = <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span> | <span class="string">&#x27;C&#x27;</span> | <span class="string">&#x27;D&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a: Option = <span class="string">&#x27;A&#x27;</span></span><br><span class="line"><span class="keyword">let</span> e: Option = <span class="string">&#x27;E&#x27;</span> <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Option</code>类型的变量只能被赋值为<code>&#39;A&#39;</code>、<code>&#39;B&#39;</code>、<code>&#39;C&#39;</code>、<code>&#39;D&#39;</code>其中一个值。这一种用法和枚举很像，比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">enum</span> Option &#123;</span><br><span class="line">  A,</span><br><span class="line">  B,</span><br><span class="line">  C,</span><br><span class="line">  D</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不同的是，字面量类型本质上是字符串，可以使用字符串的所有方法。而且，通过<code>keyof</code>操作符，我们可以动态的生成字面量类型，这一点将在之后介绍。</p>
+<h3 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h3><p>Typescript 中的泛型与其它面向对象语言中的泛型和相似，包括：泛型函数、泛型类和泛型接口。</p>
+<h4 id="泛型函数"><a href="#泛型函数" class="headerlink" title="泛型函数"></a>泛型函数</h4><p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>&lt;<span class="title">T</span>, <span class="title">U</span>&gt;(<span class="params">x: T, y: U</span>): </span>&#123; x: T; y: U &#125; &#123;</span><br><span class="line">  <span class="keyword">let</span> t: &#123; <span class="attr">x</span>: T; y: U &#125; = &#123; x, y &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> t</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">merge&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt;(<span class="string">&#x27;a&#x27;</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在中括号内声明函数中使用到的泛型变量，它代表了在调用函数时传入的类型。类型变量<code>T</code>可以用在任何需要类型声明的地方，比如参数类型、返回值类型、局部变量类型等。</p>
+<p>箭头函数也可以包含泛型。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> merge = <span class="xml">&lt;T, U&gt;(x: T, y: U): &#123; x: T; y: U &#125; =&gt; &#123;</span></span><br><span class="line"><span class="xml">  let t: &#123; x: T; y: U &#125; = &#123; x, y &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="xml">  return t</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h4><p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Merge</span>&lt;<span class="title">T</span>, <span class="title">U</span>&gt; </span>&#123;</span><br><span class="line">  x: T</span><br><span class="line">  y: U</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">x: T, y: U</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.x = x</span><br><span class="line">    <span class="built_in">this</span>.y = y</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  merge(): &#123; <span class="attr">x</span>: T; y: U &#125; &#123;</span><br><span class="line">    <span class="keyword">let</span> t: &#123; <span class="attr">x</span>: T; y: U &#125; = &#123; <span class="attr">x</span>: <span class="built_in">this</span>.x, <span class="attr">y</span>: <span class="built_in">this</span>.y &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> merge = <span class="keyword">new</span> Merge&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt;()</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在中括号内声明类中使用到的泛型变量，它代表了在实例化类时传入的类型。类型变量<code>T</code>可以用在任何需要类型声明的地方，比如成员、构造方法参数类型等。</p>
+<h4 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h4><p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Merge&lt;T, U&gt; &#123;</span><br><span class="line">  x: T</span><br><span class="line">  y: U</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> merge: Merge&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = &#123; <span class="attr">x</span>: <span class="string">&#x27;a&#x27;</span>, <span class="attr">y</span>: <span class="number">0</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在中括号内声明接口中使用到的泛型变量，它代表了在声明变量类型时传入的类型。类型变量<code>T</code>可以用在任何需要类型声明的地方，比如成员、方法参数类型等。</p>
+<h4 id="泛型约束"><a href="#泛型约束" class="headerlink" title="泛型约束"></a>泛型约束</h4><p>由于在泛型类型中，泛型变量是在使用时传入的，所以在编译时无法得知其具体类型，那么读取类类型变量的任何成员都是不行的。比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>&lt;<span class="title">T</span>&gt;(<span class="params">x: T</span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x.length <span class="comment">// 错误</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>虽然我们可能心里知道在使用时我们会传入一个具有<code>length</code>成员的变量（比如字符串），但是在编译时编译器并不知道。因此，我们需要告诉编译器<code>T</code>类型是那一类具有<code>length</code>成员的类型。使用<code>extends</code>关键字：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> HasLength &#123;</span><br><span class="line">  length: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>&lt;<span class="title">T</span> <span class="title">extends</span> <span class="title">HasLength</span>&gt;(<span class="params">x: T</span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x.length</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scale(<span class="string">&#x27;abc&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们使用<code>extends</code>对类型变量<code>T</code>进行了约束，它必须具有<code>length</code>属性。也就是是说<code>T</code>类型必须实现或继承了 HasLength 类型。</p>
+<h4 id="默认类型"><a href="#默认类型" class="headerlink" title="默认类型"></a>默认类型</h4><p>泛型参数表可以有默认类型，声明方法和默认参数类似。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span>&lt;<span class="title">T</span>, <span class="title">U</span> = <span class="title">number</span>&gt;(<span class="params">x: T, y: U</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print&lt;<span class="built_in">string</span>&gt;(<span class="string">&#x27;x&#x27;</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>同样的，默认类型参数后的类型参数必须也有默认类型。</p>
+<h4 id="预置泛型"><a href="#预置泛型" class="headerlink" title="预置泛型"></a>预置泛型</h4><p>Typescript 中的一些更高级用法是通过泛型实现的，这些泛型预置在编译器原生库中，比如获取函数返回值类型：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scale</span>(<span class="params">x: <span class="built_in">string</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x.length</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a: ReturnType&lt;<span class="keyword">typeof</span> scale&gt; = scale(<span class="string">&#x27;a&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例中，先通过<code>typeof</code>操作符获取<code>scale</code>函数的类型，再通过预置泛型<code>ReturnType</code>获取了这个函数类型的返回值类型。</p>
+<p>更多的预置泛型可以参考 Typescript 文档<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/utility-types.html">utility-types</a>。</p>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D"><span class="nav-number">2.</span> <span class="nav-text">类型别名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E5%90%88"><span class="nav-number">3.1.</span> <span class="nav-text">联合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E7%9B%AE%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">3.1.1.</span> <span class="nav-text">三目条件运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89"><span class="nav-number">3.2.</span> <span class="nav-text">交叉</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E9%9D%A2%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">字面量类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E5%87%BD%E6%95%B0"><span class="nav-number">3.4.1.</span> <span class="nav-text">泛型函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%B1%BB"><span class="nav-number">3.4.2.</span> <span class="nav-text">泛型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.4.3.</span> <span class="nav-text">泛型接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%BA%A6%E6%9D%9F"><span class="nav-number">3.4.4.</span> <span class="nav-text">泛型约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.4.5.</span> <span class="nav-text">默认类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%84%E7%BD%AE%E6%B3%9B%E5%9E%8B"><span class="nav-number">3.4.6.</span> <span class="nav-text">预置泛型</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wings-J</p>
+  <div class="site-description" itemprop="description">Wings-J 技术博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/public/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wings-J</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/public/lib/anime.min.js"></script>
+  <script src="/public/lib/velocity/velocity.min.js"></script>
+  <script src="/public/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/public/js/utils.js"></script>
+
+<script src="/public/js/motion.js"></script>
+
+
+<script src="/public/js/schemes/muse.js"></script>
+
+
+<script src="/public/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/public/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/public/css/main.css">
+
+
+<link rel="stylesheet" href="/public/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wingsj0.github.io","root":"/public/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述Javascript 没有强制的类型检查，不同类型的变量可以互相赋值，因此可能会引发一些因为类型匹配而发生的问题。Typescript 的变量都具有类型，包括基本类型和复合类型，不同的类型之间不一定兼容。  声明要声明一个变量的类型，需要采用如下的语法： 1let a: string &#x3D; &amp;#x27;a&amp;#x27;  其中: string表示变量a是一个字符串类型。等号之后表达式的值必须与变量">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wigns-J Young-Soul">
+<meta property="og:url" content="https://wingsj0.github.io/Typescript%E5%B0%8F%E5%B0%8F%E5%86%8C/3.%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B.html">
+<meta property="og:site_name" content="Wigns-J Young-Soul">
+<meta property="og:description" content="概述Javascript 没有强制的类型检查，不同类型的变量可以互相赋值，因此可能会引发一些因为类型匹配而发生的问题。Typescript 的变量都具有类型，包括基本类型和复合类型，不同的类型之间不一定兼容。  声明要声明一个变量的类型，需要采用如下的语法： 1let a: string &#x3D; &amp;#x27;a&amp;#x27;  其中: string表示变量a是一个字符串类型。等号之后表达式的值必须与变量">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-05T03:08:11.806Z">
+<meta property="article:modified_time" content="2021-04-02T23:55:52.388Z">
+<meta property="article:author" content="Wings-J">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wingsj0.github.io/Typescript%E5%B0%8F%E5%B0%8F%E5%86%8C/3.%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | Wigns-J Young-Soul
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/public/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wigns-J Young-Soul</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/public/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/public/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-code">
+
+    <a href="/public/categories/%E7%BC%96%E7%A8%8B/" rel="section"><i class="fa fa-cube fa-fw"></i>编程</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Javascript 没有强制的类型检查，不同类型的变量可以互相赋值，因此可能会引发一些因为类型匹配而发生的问题。Typescript 的变量都具有类型，包括基本类型和复合类型，不同的类型之间不一定兼容。</p>
+<hr>
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>要声明一个变量的类型，需要采用如下的语法：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a: <span class="built_in">string</span> = <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>: string</code>表示变量<code>a</code>是一个字符串类型。等号之后表达式的值必须与变量类型兼容，否则编译器会报错。</p>
+<p>在变量初始化定义语句中，如果没有声明等号左边的变量的类型，编译器会根据等号右边变量的类型来推断等号左边变量的类型。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="string">&#x27;a&#x27;</span> <span class="comment">// a是string类型</span></span><br><span class="line"><span class="keyword">let</span> b = <span class="number">1</span> <span class="comment">// b是number类型</span></span><br><span class="line"><span class="keyword">let</span> c = a <span class="comment">// c是string类型</span></span><br><span class="line">c = b <span class="comment">// 错误。无法将number类型赋值给string类型</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p>Typescript 的基本类型有：</p>
+<ul>
+<li>string</li>
+<li>number</li>
+<li>boolean</li>
+<li>symbol</li>
+<li>null</li>
+<li>undefined</li>
+<li>any</li>
+<li>unknown</li>
+<li>never</li>
+<li>void</li>
+</ul>
+<h3 id="string-number-boolean-symbol"><a href="#string-number-boolean-symbol" class="headerlink" title="string, number, boolean, symbol"></a>string, number, boolean, symbol</h3><p><code>string</code>、<code>number</code>、<code>boolean</code>、<code>symbol</code>对应 Javascript 中包装类<code>String</code>、<code>Number</code>、<code>Boolean</code>、<code>Symbol</code>的区别。但是前者是类型，后者本质上是构造函数。</p>
+<p><em>在编程中，应始终使用前者来表示变量的类型。</em></p>
+<h3 id="null-undefined"><a href="#null-undefined" class="headerlink" title="null, undefined"></a>null, undefined</h3><p><code>null</code>和<code>undefined</code>被单独作为变量类型，与其它类型并不兼容。<code>null</code>表示空指针，但是不能将<code>null</code>理解为其它面向对象语言中未实例化的空变量。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a: <span class="built_in">string</span> = <span class="literal">null</span> <span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">let</span> b: <span class="built_in">number</span> = <span class="literal">undefined</span> <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="any"><a href="#any" class="headerlink" title="any"></a>any</h3><p>当一个变量的类型是任意或无法确定时，我们可以声明它为<code>any</code>类型。</p>
+<p><code>any</code>类型变量可以赋值给任意类型的变量，也可以被赋值为任意类型变量。可以读取它的任意属性（即使不存在），读取的属性也是<code>any</code>类型。</p>
+<p>编译器不会对<code>any</code>类型变量做类型检查，因此有时候可能有风险，在一些语法检查工具（如 ESLint）常常不允许使用<code>any</code>。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a: <span class="built_in">any</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b: <span class="built_in">number</span> = a</span><br><span class="line"><span class="keyword">let</span> c: <span class="built_in">string</span> = a</span><br><span class="line"><span class="keyword">let</span> d = a.value</span><br><span class="line">a = <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="unknown"><a href="#unknown" class="headerlink" title="unknown"></a>unknown</h3><p>为了弥补<code>any</code>过于宽泛和自由的弊病，但同时有需要一种表示未知的类型，<code>unknown</code>出现了。</p>
+<p><code>unknown</code>可以被赋值为任意类型的变量，但是只能赋值给<code>unknown</code>或<code>any</code>类型的变量，同时也不能读取它的任何属性。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a: unknown = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b: <span class="built_in">number</span> = a <span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">let</span> c: <span class="built_in">string</span> = a <span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">let</span> d = a.value <span class="comment">// 错误</span></span><br><span class="line">a = <span class="string">&#x27;a&#x27;</span> <span class="comment">// 合法</span></span><br></pre></td></tr></table></figure>
+
+<p>它的作用之一是预先声明一个不确定类型的变量，等到实际使用时再转换类型。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a: unknown <span class="comment">// 声明</span></span><br><span class="line">a = <span class="string">&#x27;a&#x27;</span> <span class="comment">// 赋值</span></span><br><span class="line"><span class="keyword">let</span> b: <span class="built_in">string</span> = a <span class="keyword">as</span> <span class="built_in">string</span> <span class="comment">// 使用</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以作为两种无法兼容的类型转换时的中间类型（这种操作可能有风险）。示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a: <span class="built_in">string</span> = (<span class="number">0</span> <span class="keyword">as</span> unknown) <span class="keyword">as</span> <span class="built_in">string</span></span><br></pre></td></tr></table></figure>
+
+<p><em>有关类型转换的内容将在之后介绍。</em></p>
+<h3 id="never"><a href="#never" class="headerlink" title="never"></a>never</h3><p><code>never</code>表示正常情况下无法到达的类型，比如抛出异常的函数：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">error</span>(<span class="params"></span>): <span class="title">never</span> </span>&#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&#x27;error&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="void"><a href="#void" class="headerlink" title="void"></a>void</h3><p><code>void</code>表示空类型，通常用在没有返回值的函数上。</p>
+<p>示例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">arg: <span class="built_in">string</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#string-number-boolean-symbol"><span class="nav-number">3.1.</span> <span class="nav-text">string, number, boolean, symbol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null-undefined"><span class="nav-number">3.2.</span> <span class="nav-text">null, undefined</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#any"><span class="nav-number">3.3.</span> <span class="nav-text">any</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unknown"><span class="nav-number">3.4.</span> <span class="nav-text">unknown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#never"><span class="nav-number">3.5.</span> <span class="nav-text">never</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void"><span class="nav-number">3.6.</span> <span class="nav-text">void</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wings-J</p>
+  <div class="site-description" itemprop="description">Wings-J 技术博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/public/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wings-J</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/public/lib/anime.min.js"></script>
+  <script src="/public/lib/velocity/velocity.min.js"></script>
+  <script src="/public/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/public/js/utils.js"></script>
+
+<script src="/public/js/motion.js"></script>
+
+
+<script src="/public/js/schemes/muse.js"></script>
+
+
+<script src="/public/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
