@@ -16,7 +16,7 @@ categories: 编程
 
 先看效果：
 
-![](0.gif)
+![](./0.gif)
 
 或点击查看[网页示例](https://works-wings.oss-cn-hangzhou.aliyuncs.com/WebAnimationTricks/data/InfiniteSlideText/page/Index.html)
 
